@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AddToCartButton } from "@/components/add-to-cart";
+import { ViewItemTracker } from "@/components/analytics";
 import { ProductCard, Stars } from "@/components/product-card";
 import { getCollection } from "@/data/collections";
 import { getProduct, getProductSlugs, getRelatedProducts } from "@/data/products";
@@ -85,6 +86,16 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+
+      {/* Registro de la vista del producto (solo si hay pixel configurado). */}
+      <ViewItemTracker
+        item={{
+          id: product.slug,
+          name: product.shortName,
+          price: product.price,
+          quantity: 1,
+        }}
       />
 
       <div className="container-page py-10">

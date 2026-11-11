@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import { useCart } from "@/components/cart-provider";
 import { site } from "@/data/site";
+import { trackBeginCheckout } from "@/lib/analytics";
 import { computeTotals, resolveLines } from "@/lib/cart";
 import {
   emptyCustomer,
@@ -19,7 +20,10 @@ type SubmitState =
   | { kind: "idle" }
   | { kind: "sending" }
   | { kind: "error"; message: string }
-  | { kind: "notConfigured"; message: string };
+  | { kind: "notConfigured"; message: string }
+  | { kind: "waSending" }
+  | { kind: "waReady"; orderId: string; waLink: string; total: number }
+  | { kind: "waError"; message: string };
 
 export default function CartPage() {
   const { lines, setQty, remove, ready } = useCart();
@@ -40,6 +44,17 @@ export default function CartPage() {
     event.preventDefault();
     setSubmit({ kind: "sending" });
     setErrors({});
+
+    // El cliente esta cerrando la compra (registro de analitica).
+    trackBeginCheckout(
+      resolved.map(({ product, qty }) => ({
+        id: product.slug,
+        name: product.shortName,
+        price: product.price,
+        quantity: qty,
+      })),
+      totals.total,
+    );
 
     try {
       const response = await fetch("/api/checkout", {
@@ -89,6 +104,63 @@ export default function CartPage() {
     }
   }
 
+  /**
+   * Camino de compra sin pasarela: registramos el pedido en el servidor y
+   * mandamos al cliente un enlace de WhatsApp con el resumen listo para
+   * enviar. Funciona aunque Mercado Pago no este configurado.
+   */
+  async function handleWhatsappOrder() {
+    setSubmit({ kind: "waSending" });
+    setErrors({});
+
+    try {
+      const response = await fetch("/api/pedido-whatsapp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lines: lines.map((line) => ({ slug: line.slug, qty: line.qty })),
+          customer,
+        }),
+      });
+
+      const data = (await response.json()) as {
+        error?: string;
+        message?: string;
+        fields?: FieldErrors;
+        orderId?: string;
+        total?: number;
+        waLink?: string;
+      };
+
+      if (response.status === 422 && data.fields) {
+        setErrors(data.fields);
+        setSubmit({ kind: "waError", message: "Revisa los campos marcados." });
+        return;
+      }
+
+      if (!response.ok || !data.orderId || !data.waLink) {
+        setSubmit({
+          kind: "waError",
+          message:
+            data.error ?? "No pudimos registrar tu pedido. Intenta de nuevo.",
+        });
+        return;
+      }
+
+      setSubmit({
+        kind: "waReady",
+        orderId: data.orderId,
+        waLink: data.waLink,
+        total: typeof data.total === "number" ? data.total : totals.total,
+      });
+    } catch {
+      setSubmit({
+        kind: "waError",
+        message: "Error de conexion. Revisa tu internet e intenta de nuevo.",
+      });
+    }
+  }
+
   if (!ready) {
     return (
       <div className="container-page py-24 text-center">
@@ -116,12 +188,14 @@ export default function CartPage() {
     );
   }
 
+  const whatsappBusy = submit.kind === "waSending";
+
   return (
     <div className="container-page py-12">
       <h1 className="text-3xl font-black tracking-tight">Finalizar compra</h1>
       <p className="mt-2 text-sm text-muted">
-        Revisa tu pedido y completa los datos de envio. El pago se procesa con Mercado
-        Pago.
+        Revisa tu pedido y completa los datos de envio. Paga con Mercado Pago o, si
+        prefieres, pide por WhatsApp y lo cerramos contigo.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-10 grid gap-10 lg:grid-cols-[1.3fr_1fr]">
@@ -350,6 +424,26 @@ export default function CartPage() {
                 : `Pagar ${formatMXN(totals.total)}`}
             </button>
 
+            <div className="my-4 flex items-center gap-3 text-[11px] uppercase tracking-wider text-muted-2">
+              <span className="h-px flex-1 bg-line" />
+              o
+              <span className="h-px flex-1 bg-line" />
+            </div>
+
+            <button
+              type="button"
+              onClick={handleWhatsappOrder}
+              disabled={whatsappBusy}
+              className="w-full rounded-lg border border-accent/50 px-6 py-3.5 text-sm font-semibold text-accent transition hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {whatsappBusy ? "Registrando tu pedido..." : "Pedir por WhatsApp"}
+            </button>
+
+            <p className="mt-3 text-center text-[11px] leading-relaxed text-muted-2">
+              Sin tarjeta ni registro. Registramos tu pedido y te mandamos el resumen por
+              WhatsApp, listo para enviar, para confirmar el pago con una persona.
+            </p>
+
             <p className="mt-3 text-center text-[11px] leading-relaxed text-muted-2">
               Pago seguro procesado por Mercado Pago. Nunca vemos ni guardamos los datos
               de tu tarjeta.
@@ -365,12 +459,56 @@ export default function CartPage() {
               <div className="mt-4 rounded-lg border border-accent/40 bg-accent-soft px-3.5 py-3 text-xs leading-relaxed text-accent">
                 <p className="font-semibold">El pago en linea no esta activo.</p>
                 <p className="mt-1.5 text-accent/90">{submit.message}</p>
-                <a
-                  href={site.whatsappLink}
-                  className="mt-2.5 inline-block font-semibold underline underline-offset-4"
+                <button
+                  type="button"
+                  onClick={handleWhatsappOrder}
+                  disabled={whatsappBusy}
+                  className="mt-3 w-full rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Escribir por WhatsApp
+                  {whatsappBusy ? "Registrando tu pedido..." : "Pedir por WhatsApp"}
+                </button>
+              </div>
+            )}
+
+            {submit.kind === "waError" && (
+              <p className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 px-3.5 py-2.5 text-xs text-red-300">
+                {submit.message}
+              </p>
+            )}
+
+            {submit.kind === "waReady" && (
+              <div className="mt-4 rounded-lg border border-success/40 bg-success/10 px-3.5 py-3.5 text-xs leading-relaxed">
+                <p className="font-semibold text-success">
+                  Pedido registrado: {submit.orderId}
+                </p>
+                <p className="mt-1.5 text-muted">
+                  Ya guardamos tu pedido por {formatMXN(submit.total)}. Falta confirmar
+                  el pago: abre WhatsApp y mandamos el resumen listo para enviar.
+                </p>
+
+                <a
+                  href={submit.waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 block rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-accent-hover"
+                >
+                  Abrir WhatsApp y enviar mi pedido
                 </a>
+
+                <p className="mt-2.5 text-[11px] text-muted-2">
+                  Si no se abre la app, escribe a {site.whatsapp} y manda este numero
+                  de pedido:{" "}
+                  <span className="font-mono font-semibold text-cream">
+                    {submit.orderId}
+                  </span>
+                </p>
+
+                <Link
+                  href={`/seguimiento?pedido=${submit.orderId}`}
+                  className="mt-2 block text-center text-[11px] font-medium text-accent underline underline-offset-4"
+                >
+                  Ver el estado de mi pedido
+                </Link>
               </div>
             )}
           </div>

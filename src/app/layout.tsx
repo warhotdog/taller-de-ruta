@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 
+import { Analytics } from "@/components/analytics";
 import { CartProvider } from "@/components/cart-provider";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -79,6 +80,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </CartProvider>
+        <Analytics />
       </body>
     </html>
   );

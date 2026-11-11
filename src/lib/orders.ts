@@ -20,6 +20,8 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 export type OrderStatus =
+  /** pedido registrado que aun no paga (se cierra por WhatsApp) */
+  | "pendiente_pago"
   | "paid"
   | "packing"
   | "shipped"
@@ -27,6 +29,7 @@ export type OrderStatus =
   | "cancelled";
 
 export const ORDER_STATUSES: readonly OrderStatus[] = [
+  "pendiente_pago",
   "paid",
   "packing",
   "shipped",
@@ -132,10 +135,29 @@ function resolveStoreRoot(): string {
   return process.cwd();
 }
 
+/**
+ * Directorio donde se guardan los pedidos.
+ *
+ * En local (desarrollo y la maquina del usuario) usa `<raiz>/data`.
+ *
+ * En Vercel el filesystem del proyecto es de SOLO LECTURA, asi que escribir
+ * ahi revienta con EROFS. En ese caso caemos a `/tmp`, que si es escribible.
+ * `/tmp` es efimero (se pierde con el redeploy), por eso en produccion hay que
+ * apuntar `ORDERS_DIR` a un volumen persistente (ver README del proyecto).
+ */
 export function getDataDir(): string {
   const fromEnv = process.env.ORDERS_DIR;
   if (fromEnv) return path.resolve(fromEnv);
-  return path.join(resolveStoreRoot(), "data");
+
+  const preferred = path.join(resolveStoreRoot(), "data");
+
+  // En Vercel (y en cualquier serverless con fs de solo lectura) /tmp es la
+  // unica ubicacion escribible. `process.env.VERCEL` lo identifica.
+  if (process.env.VERCEL) {
+    return path.join("/tmp", "taller-de-ruta", "data");
+  }
+
+  return preferred;
 }
 
 export function getOrdersFile(): string {

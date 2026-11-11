@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/envios`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
     { url: `${base}/devoluciones`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
     { url: `${base}/contacto`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
+    { url: `${base}/seguimiento`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/nosotros`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
   ];
 

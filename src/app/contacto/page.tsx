@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ContactForm } from "@/components/contact-form";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -60,7 +61,7 @@ export default function ContactPage() {
             <p className="mt-1.5 text-sm text-muted">{site.whatsapp}</p>
             <p className="mt-3 text-xs leading-relaxed text-muted-2">
               Es la via mas rapida para dudas de producto, estado de pedido y problemas de
-              entrega.
+              entrega. Tambien puedes cerrar tu pedido completo por aqui.
             </p>
           </a>
 
@@ -87,29 +88,48 @@ export default function ContactPage() {
               habil.
             </p>
           </div>
-        </div>
 
-        <div className="rounded-xl border border-line bg-surface p-6 sm:p-8">
-          <h2 className="text-lg font-bold">En que te podemos ayudar</h2>
-
-          <div className="mt-6 space-y-5">
-            {reasons.map((reason) => (
-              <div key={reason.title} className="border-b border-line pb-5 last:border-0 last:pb-0">
-                <h3 className="text-sm font-semibold">{reason.title}</h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-muted">{reason.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-7 rounded-lg bg-accent-soft p-4">
-            <p className="text-xs leading-relaxed text-accent">
-              <strong>Tip para respuestas rapidas:</strong> incluye tu numero de orden
-              (formato TDR-XXXXXX-XXXX) y, si es un problema de producto, una foto. Con
-              eso resolvemos en el primer mensaje.
+          <div className="rounded-xl border border-line bg-ink-2 p-6">
+            <h2 className="text-sm font-semibold">Ya compraste y quieres el estado?</h2>
+            <p className="mt-2 text-sm text-muted">
+              Usa el rastreador con tu numero de pedido. Te lo mostramos sin que
+              tengas que escribirnos.
             </p>
+            <Link
+              href="/seguimiento"
+              className="mt-3 inline-block text-sm font-semibold text-accent underline underline-offset-4"
+            >
+              Rastrear mi pedido
+            </Link>
           </div>
         </div>
+
+        <ContactForm />
       </div>
+
+      <section className="mt-14 border-t border-line pt-10">
+        <h2 className="text-lg font-bold">En que te podemos ayudar</h2>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {reasons.map((reason) => (
+            <div
+              key={reason.title}
+              className="rounded-xl border border-line bg-surface p-5"
+            >
+              <h3 className="text-sm font-semibold">{reason.title}</h3>
+              <p className="mt-1.5 text-xs leading-relaxed text-muted">{reason.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 rounded-lg bg-accent-soft p-4">
+          <p className="text-xs leading-relaxed text-accent">
+            <strong>Tip para respuestas rapidas:</strong> incluye tu numero de orden
+            (formato TDR-XXXXXX-XXXX) y, si es un problema de producto, una foto. Con
+            eso resolvemos en el primer mensaje.
+          </p>
+        </div>
+      </section>
 
       <div className="mt-14 grid gap-4 border-t border-line pt-10 sm:grid-cols-3">
         <Link

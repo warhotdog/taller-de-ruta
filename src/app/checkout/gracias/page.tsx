@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { PurchaseTracker } from "@/components/analytics";
 import { ClearCart } from "@/components/clear-cart";
 import { site } from "@/data/site";
+import { getOrder } from "@/lib/orders";
 
 export const metadata: Metadata = {
   title: "Gracias por tu compra",
   robots: { index: false, follow: false },
 };
+
+export const dynamic = "force-dynamic";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -24,9 +28,31 @@ export default async function ThankYouPage({
   const paymentId = firstValue(params.payment_id);
   const reference = firstValue(params.external_reference);
 
+  // Registro de la compra (solo si hay pixel configurado). Si la orden todavia
+  // no esta en el servidor, el tracker la busca por su cuenta.
+  const order = reference ? await getOrder(reference) : undefined;
+
+  const analyticsOrder = order
+    ? {
+        id: order.id,
+        total: order.total,
+        shipping: order.shipping,
+        items: order.items.map((item) => ({
+          id: item.slug,
+          name: item.name,
+          price: item.unitPrice,
+          quantity: item.qty,
+        })),
+      }
+    : null;
+
   return (
     <div className="container-page py-24">
       <ClearCart />
+
+      {reference ? (
+        <PurchaseTracker orderId={reference} order={analyticsOrder} />
+      ) : null}
 
       <div className="mx-auto max-w-xl">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-success/15 text-2xl text-success">
@@ -90,6 +116,17 @@ export default async function ThankYouPage({
             Escribenos
           </Link>{" "}
           con tu numero de orden y te respondemos en menos de 24 horas habiles.
+        </p>
+
+        <p className="mt-3 text-sm text-muted">
+          ¿Quieres saber en que va?{" "}
+          <Link
+            href={reference ? `/seguimiento?pedido=${reference}` : "/seguimiento"}
+            className="font-medium text-accent underline underline-offset-4"
+          >
+            Rastrea tu pedido
+          </Link>{" "}
+          con tu numero de orden.
         </p>
 
         <Link

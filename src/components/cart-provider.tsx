@@ -12,6 +12,8 @@ import {
   type ReactNode,
 } from "react";
 
+import { products } from "@/data/products";
+import { trackAddToCart } from "@/lib/analytics";
 import { computeTotals, normalizeLines, resolveLines, type CartLine } from "@/lib/cart";
 import { formatMXN } from "@/lib/format";
 
@@ -94,6 +96,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return next;
     });
     setIsOpen(true);
+
+    // Registro del "agregar al carrito" (solo si hay pixel configurado).
+    const product = products.find((entry) => entry.slug === slug);
+    if (product) {
+      trackAddToCart({
+        id: product.slug,
+        name: product.shortName,
+        price: product.price,
+        quantity: qty,
+      });
+    }
   }, []);
 
   const setQty = useCallback((slug: string, qty: number) => {

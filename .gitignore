@@ -26,3 +26,5 @@ Thumbs.db
 # Pedidos (contienen datos personales de clientes: NUNCA subir)
 data/
 store/data/
+
+.vercel
