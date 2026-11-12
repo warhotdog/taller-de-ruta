@@ -24,7 +24,10 @@ Thumbs.db
 *.log
 
 # Pedidos (contienen datos personales de clientes: NUNCA subir)
-data/
-store/data/
+# OJO: el patron debe ir anclado a la raiz con "/". Sin la barra, "data/"
+# tambien excluye "src/data/" (catalogo, productos, guias) y el build de
+# Vercel falla con "Can't resolve '@/data/site'".
+/data/
+/store/data/
 
 .vercel
