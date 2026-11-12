@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -55,6 +55,121 @@ W, H = 1080, 1920
 SQUARE = 1080
 OUT_DIR = Path(__file__).resolve().parent.parent / "public" / "creativos"
 GUIONES_PATH = Path(__file__).resolve().parent / "CREATIVOS-GUIONES.txt"
+
+# Visuales fotorrealistas generados con Gemini (referencia: foto real del
+# producto). Se generan con tools/generar-visuales.mjs en el repo raiz.
+VISUAL_DIR = Path(__file__).resolve().parents[2] / "creativos-ai" / "visuales"
+
+# Fotos de catalogo del store: respaldo cuando el visual IA todavia no existe
+# (por ejemplo, cuando el limite de generacion de Gemini esta agotado).
+PRODUCTOS_DIR = Path(__file__).resolve().parents[1] / "public" / "productos"
+
+# De la ilustracion original a la foto de catalogo del producto
+ART_A_PRODUCTO = {
+    "phone-mount": "kit-soporte-antivibracion-360",
+    "phone-waterproof": "soporte-impermeable-espejo",
+    "grips": "punos-universales",
+    "bike-cover": "cubre-moto",
+    "saddlebags": "alforjas-universales",
+    "leg-bag": "bolsa-pierna",
+    "backpack": "mochila-impermeable",
+    "cargo-net": "red-porta-carga",
+    "chain-brush": "cepillo-cadena",
+    "reflective": "stickers-reflectivos",
+    "stickers": "stickers-genericos",
+    "disc-lock": "candado-disco",
+    "tool-roll": "bolsa-herramientas",
+    "handguards": "cubre-punos",
+}
+
+
+def load_visual(name: str) -> Image.Image | None:
+    """Carga el visual fotorrealista del creativo, si ya fue generado."""
+    path = VISUAL_DIR / f"{name}.png"
+    if not path.exists():
+        return None
+    try:
+        return Image.open(path).convert("RGB")
+    except Exception:
+        return None
+
+
+def load_foto_producto(art: str) -> Image.Image | None:
+    """Carga la foto de catalogo del producto (fondo blanco)."""
+    slug = ART_A_PRODUCTO.get(art)
+    if not slug:
+        return None
+    path = PRODUCTOS_DIR / f"{slug}.jpg"
+    if not path.exists():
+        return None
+    try:
+        return Image.open(path).convert("RGB")
+    except Exception:
+        return None
+
+
+def trim_white(image: Image.Image, tol: int = 12) -> Image.Image:
+    """Recorta el fondo blanco uniforme de la foto de catalogo."""
+    bg = Image.new("RGB", image.size, (255, 255, 255))
+    diff = ImageChops.difference(image, bg).convert("L")
+    bbox = diff.point(lambda p: 255 if p > tol else 0).getbbox()
+    if not bbox:
+        return image
+    x0, y0, x1, y1 = bbox
+    w, h = image.size
+    if (x1 - x0) < w * 0.2 or (y1 - y0) < h * 0.2:
+        return image
+    return image.crop(bbox)
+
+
+def product_card(
+    photo: Image.Image,
+    max_width: int,
+    max_height: int,
+) -> Image.Image:
+    """Monta la foto de catalogo en una tarjeta blanca con esquinas redondeadas.
+
+    Se usa como respaldo del visual IA: mantiene el lenguaje de marca (fondo
+    oscuro, tarjeta clara, sombra) pero con la foto REAL del producto.
+
+    La tarjeta se ajusta a la foto (misma proporcion, con un margen corto):
+    si se estira a un recuadro fijo la foto queda flotando en un mar de blanco.
+    """
+    photo = trim_white(photo)
+    scale = min(max_width / photo.width, max_height / photo.height)
+    size = (max(1, int(photo.width * scale)), max(1, int(photo.height * scale)))
+    resized = photo.resize(size, Image.LANCZOS)
+
+    pad = int(min(size) * 0.05)
+    card_w = size[0] + pad * 2
+    card_h = size[1] + pad * 2
+    card = Image.new("RGB", (card_w, card_h), (255, 255, 255))
+    card.paste(resized, (pad, pad))
+
+    radius = int(min(card_w, card_h) * 0.045)
+    mask = Image.new("L", (card_w, card_h), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, card_w - 1, card_h - 1), radius=radius, fill=255)
+    card.putalpha(mask)
+    return card
+
+
+def cover(image: Image.Image, width: int, height: int) -> Image.Image:
+    """Escala la imagen a sangre, recortando por el centro para llenar el lienzo.
+
+    Gemini entrega los verticales a 572x1024, asi que hay que ampliar hasta
+    1080x1920. Con LANCZOS solo se ve algo suave, por eso se pasa despues una
+    mascara de nitidez: en fotografia (no en dibujo con bordes duros) aguanta
+    bien el reescalado.
+    """
+    src_w, src_h = image.size
+    scale = max(width / src_w, height / src_h)
+    new_w, new_h = max(width, int(src_w * scale + 0.5)), max(height, int(src_h * scale + 0.5))
+    resized = image.resize((new_w, new_h), Image.LANCZOS)
+    if scale > 1.05:
+        resized = resized.filter(ImageFilter.UnsharpMask(radius=1.6, percent=70, threshold=3))
+    left = (new_w - width) // 2
+    top = (new_h - height) // 2
+    return resized.crop((left, top, left + width, top + height))
 
 # --------------------------------------------------------------------------
 # Contenido de los creativos
@@ -641,6 +756,26 @@ def cta_button(
 # --------------------------------------------------------------------------
 # Render de cada formato
 # --------------------------------------------------------------------------
+def scrim_photo(image: Image.Image) -> Image.Image:
+    """Oscurece una foto para que el texto de marca se lea encima.
+
+    Mas aggressive que `scrim`: la foto es el fondo completo y el texto
+    blanco tiene que contrastar sobre cielos claros y Calles de dia.
+    """
+    w, h = image.size
+    ramp = np.linspace(0, 1, h, dtype=np.float32)[:, None]
+
+    top_factor = np.clip(1 - ramp / 0.52, 0, 1) ** 1.15
+    bottom_factor = np.clip((ramp - 0.62) / 0.38, 0, 1) ** 1.15
+    factor = np.maximum(top_factor, bottom_factor)[:, :, None]
+
+    arr = np.array(image.convert("RGB")).astype(np.float32)
+    # capa de marca general: baja un poco todo para que respire la paleta
+    arr = arr * 0.74
+    arr = arr * (1 - factor * 0.66)
+    return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
+
+
 def render_creative(data: dict) -> Image.Image:
     is_square = data["format"] == "square"
     width = SQUARE
@@ -652,7 +787,7 @@ def render_creative(data: dict) -> Image.Image:
         top_color = (14, 16, 24)
         bottom_color = (8, 9, 13)
 
-    image = base_background(width, height, top_color, bottom_color)
+    visual = load_visual(data["file"])
 
     # --- Layout del texto (se calcula antes para recortar la escena) -----
     margin = 72
@@ -667,28 +802,37 @@ def render_creative(data: dict) -> Image.Image:
     zone_bottom = panel_top - 20
     zone_height = zone_bottom - zone_top
 
-    # --- Escena de fondo (recortada a la zona de la ilustracion) --------
-    scene_name = data.get("scene", "none")
-    if scene_name in SCENES:
-        layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(layer, "RGBA")
-        if scene_name == "vibration":
-            scene_vibration(draw, width, height, width / 2, zone_top + zone_height * 0.45)
-        else:
-            SCENES[scene_name](draw, width, height)
-        cropped = layer.crop((0, max(0, int(zone_top) - 70), width, int(panel_top)))
-        image.alpha_composite(cropped, dest=(0, max(0, int(zone_top) - 70)))
+    if visual is not None:
+        # --- Fondo fotografico a sangre ------------------------------------
+        image = cover(visual, width, height).convert("RGBA")
+    else:
+        image = base_background(width, height, top_color, bottom_color)
 
-    # Halo naranja detras del producto
-    art_center_y = zone_top + zone_height / 2
-    image.alpha_composite(
-        radial_gradient(width, height, width / 2, art_center_y, width * 0.62, ACCENT, 46, falloff=2.2)
-    )
-    image = scrim(image)
+        # --- Escena de fondo (recortada a la zona de la ilustracion) ------
+        scene_name = data.get("scene", "none")
+        if scene_name in SCENES:
+            layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+            draw = ImageDraw.Draw(layer, "RGBA")
+            if scene_name == "vibration":
+                scene_vibration(draw, width, height, width / 2, zone_top + zone_height * 0.45)
+            else:
+                SCENES[scene_name](draw, width, height)
+            cropped = layer.crop((0, max(0, int(zone_top) - 70), width, int(panel_top)))
+            image.alpha_composite(cropped, dest=(0, max(0, int(zone_top) - 70)))
 
-    # --- Texto superior -------------------------------------------------
+        # Halo naranja detras del producto
+        art_center_y = zone_top + zone_height / 2
+        image.alpha_composite(
+            radial_gradient(width, height, width / 2, art_center_y, width * 0.62, ACCENT, 46, falloff=2.2)
+        )
+        image = scrim(image)
+
+    if visual is not None:
+        image = scrim_photo(image)
+
     draw = ImageDraw.Draw(image, "RGBA")
 
+    # --- Texto superior -------------------------------------------------
     draw.rounded_rectangle((margin, 176, margin + 46, 183), radius=3, fill=ACCENT)
     draw_tracked(draw, (margin + 62, 156), data["kicker"].upper(), font(26, "semibold"), ACCENT, 4, anchor="la")
 
@@ -704,15 +848,22 @@ def render_creative(data: dict) -> Image.Image:
     )
 
     # --- Ilustracion ----------------------------------------------------
-    art = fit_art(data["art"], int(width * 0.94), int(zone_height))
-    art_w, art_h = art.size
-    art_x = int(width / 2 - art_w / 2)
-    art_y = int(zone_top + (zone_height - art_h) / 2)
+    if visual is None:
+        # Respaldo: tarjeta con la FOTO REAL de catalogo del producto.
+        # Solo si no hay visual IA se cae en el dibujo original.
+        foto = load_foto_producto(data["art"])
+        if foto is not None:
+            art = product_card(foto, int(width * 0.88), int(zone_height * 0.95))
+        else:
+            art = fit_art(data["art"], int(width * 0.94), int(zone_height))
+        art_w, art_h = art.size
+        art_x = int(width / 2 - art_w / 2)
+        art_y = int(zone_top + (zone_height - art_h) / 2)
 
-    alpha = art.getchannel("A")
-    shadow = soft_shadow(alpha, offset=(0, 30), blur=40, opacity=140)
-    image.alpha_composite(shadow, dest=(art_x, art_y + 30))
-    image.alpha_composite(art, dest=(art_x, art_y))
+        alpha = art.getchannel("A")
+        shadow = soft_shadow(alpha, offset=(0, 30), blur=40, opacity=140)
+        image.alpha_composite(shadow, dest=(art_x, art_y + 30))
+        image.alpha_composite(art, dest=(art_x, art_y))
 
     # --- Panel de oferta ------------------------------------------------
     draw = ImageDraw.Draw(image, "RGBA")
@@ -726,7 +877,7 @@ def render_creative(data: dict) -> Image.Image:
         lambda d: d.rounded_rectangle((panel_x, panel_y, panel_x + panel_w, panel_y + panel_h), radius=34, fill=255),
     )
     panel_layer = Image.new("RGBA", image.size, (255, 255, 255, 0))
-    panel_layer.paste(Image.new("RGBA", image.size, (24, 27, 33, 232)), (0, 0))
+    panel_layer.paste(Image.new("RGBA", image.size, (24, 27, 33, 236)), (0, 0))
     panel_layer.putalpha(panel_mask)
     image.alpha_composite(panel_layer)
 

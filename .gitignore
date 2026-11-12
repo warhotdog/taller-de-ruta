@@ -31,3 +31,7 @@ Thumbs.db
 /store/data/
 
 .vercel
+
+# Python
+__pycache__/
+*.pyc
