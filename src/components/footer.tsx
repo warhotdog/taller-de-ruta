@@ -83,14 +83,48 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-muted-2 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} {site.legalName}. Todos los derechos reservados.
-          </p>
-          <p>
-            Los productos de esta tienda son accesorios genericos. No vendemos piezas
-            de marcas registradas ni refacciones criticas de seguridad.
-          </p>
+        <div className="mt-12 border-t border-line pt-6">
+          {/*
+            Contacto: el footer era el unico lugar de toda la tienda donde no
+            habia forma de escribirle a nadie. Mientras el pago con tarjeta no
+            este activo, WhatsApp es el unico canal de compra que funciona, asi
+            que tiene que estar a un clic desde cualquier pagina.
+          */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-2">
+            <span>
+              WhatsApp:{" "}
+              <a
+                href={site.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-accent transition hover:text-accent-hover"
+              >
+                {site.whatsapp}
+              </a>
+            </span>
+
+            <span>
+              Correo:{" "}
+              <a
+                href={`mailto:${site.email}`}
+                className="font-medium text-accent transition hover:text-accent-hover"
+              >
+                {site.email}
+              </a>
+            </span>
+
+            <span>{site.hours}</span>
+          </div>
+
+          <div className="mt-6 flex flex-col gap-3 border-t border-line pt-6 text-xs text-muted-2 sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              © {year} {site.legalName}. Todos los derechos reservados.
+            </p>
+            <p>
+              Los productos de esta tienda son accesorios genericos. No vendemos piezas
+              de marcas registradas ni refacciones criticas de seguridad.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

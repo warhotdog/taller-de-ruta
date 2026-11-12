@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
 import { collections, getCollection } from "@/data/collections";
 import { getProductsByCollection } from "@/data/products";
+import { collectionSeoTitle } from "@/lib/collection-seo";
+import { socialMetadata } from "@/lib/social";
 
 type Params = { slug: string };
 
@@ -22,16 +24,18 @@ export async function generateMetadata({
 
   if (!collection) return { title: "Categoria no encontrada" };
 
+  const title = collectionSeoTitle(slug, collection.title);
+
   return {
-    title: collection.title,
+    title,
     description: collection.description,
     keywords: collection.keywords,
     alternates: { canonical: `/coleccion/${collection.slug}` },
-    openGraph: {
-      title: collection.title,
+    ...socialMetadata({
+      title,
       description: collection.description,
-      url: `/coleccion/${collection.slug}`,
-    },
+      path: `/coleccion/${collection.slug}`,
+    }),
   };
 }
 
@@ -68,8 +72,14 @@ export default async function CollectionPage({
             {collection.emoji}
           </span>
 
+          {/*
+            El H1 es el NOMBRE de la categoria, no `collection.title`.
+            `collection.title` es el titulo SEO (ver src/lib/collection-seo.ts):
+            usarlo aqui hacia que la pagina de categoria se titulara igual que
+            uno de sus productos.
+          */}
           <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-            {collection.title}
+            {collection.name}
           </h1>
 
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">

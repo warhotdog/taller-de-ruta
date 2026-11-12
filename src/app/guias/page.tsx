@@ -2,12 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { getAllGuides } from "@/data/guides";
+import { socialMetadata } from "@/lib/social";
+
+const DESCRIPTION =
+  "Guias practicas para elegir accesorios de moto: soportes sin vibracion, alforjas vs mochila, cubre moto, punos universales y mantenimiento de cadena.";
 
 export const metadata: Metadata = {
   title: "Guias de accesorios para moto",
-  description:
-    "Guias practicas para elegir accesorios de moto: soportes sin vibracion, alforjas vs mochila, cubre moto, punos universales y mantenimiento de cadena.",
+  description: DESCRIPTION,
   alternates: { canonical: "/guias" },
+  ...socialMetadata({
+    title: "Guias de accesorios para moto",
+    description: DESCRIPTION,
+    path: "/guias",
+  }),
 };
 
 export default function GuidesPage() {

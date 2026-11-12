@@ -2,12 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { site } from "@/data/site";
+import { socialMetadata } from "@/lib/social";
+
+const DESCRIPTION =
+  "Politica de devoluciones clara: 30 dias para reportar defectos, reposicion o devolucion de tu dinero. Sin letras chiquitas.";
 
 export const metadata: Metadata = {
   title: "Devoluciones y garantia",
-  description:
-    "Politica de devoluciones clara: 30 dias para reportar defectos, reposicion o devolucion de tu dinero. Sin letras chiquitas.",
+  description: DESCRIPTION,
   alternates: { canonical: "/devoluciones" },
+  ...socialMetadata({
+    title: "Devoluciones y garantia",
+    description: DESCRIPTION,
+    path: "/devoluciones",
+  }),
 };
 
 export default function ReturnsPage() {

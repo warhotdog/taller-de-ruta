@@ -64,18 +64,72 @@ export function analyticsEnabled(): boolean {
 // Envolturas de los SDK
 // ---------------------------------------------------------------------------
 
+type PendingEvent = {
+  kind: "pixel" | "ga4";
+  event: string;
+  params: Record<string, unknown>;
+};
+
+/**
+ * Eventos que se dispararon antes de que cargara el script del pixel.
+ *
+ * Los scripts de terceros llegan despues de la hidratacion, asi que un
+ * evento puede quedar sin destino (por ejemplo, la vista de un producto, que
+ * se dispara al montar la pagina). Los guardamos aqui y los reenviamos en
+ * cuanto el SDK esta listo.
+ */
+let pending: PendingEvent[] = [];
+
+/** Reenvia los eventos que estaban esperando al SDK. */
+export function flushAnalytics(): void {
+  if (typeof window === "undefined") return;
+  if (pending.length === 0) return;
+
+  const fbq = window.fbq;
+  const gtag = window.gtag;
+
+  if (typeof fbq !== "function" && typeof gtag !== "function") return;
+
+  const rest: PendingEvent[] = [];
+
+  for (const item of pending) {
+    let sent = false;
+
+    try {
+      if (item.kind === "pixel" && typeof fbq === "function") {
+        fbq("track", item.event, item.params);
+        sent = true;
+      }
+      if (item.kind === "ga4" && typeof gtag === "function") {
+        gtag("event", item.event, item.params);
+        sent = true;
+      }
+    } catch {
+      sent = false;
+    }
+
+    if (!sent) rest.push(item);
+  }
+
+  pending = rest;
+}
+
 function firePixel(event: string, params: Record<string, unknown>): void {
   if (typeof window === "undefined") return;
   if (!metaPixelId()) return;
 
   const fbq = window.fbq;
-  if (typeof fbq !== "function") return;
 
-  try {
-    fbq("track", event, params);
-  } catch {
-    // Un error del pixel nunca debe romper la tienda.
+  if (typeof fbq === "function") {
+    try {
+      fbq("track", event, params);
+      return;
+    } catch {
+      // Un error del pixel nunca debe romper la tienda: lo reintentamos luego.
+    }
   }
+
+  pending.push({ kind: "pixel", event, params });
 }
 
 function fireGtag(event: string, params: Record<string, unknown>): void {
@@ -83,13 +137,17 @@ function fireGtag(event: string, params: Record<string, unknown>): void {
   if (!ga4Id()) return;
 
   const gtag = window.gtag;
-  if (typeof gtag !== "function") return;
 
-  try {
-    gtag("event", event, params);
-  } catch {
-    // Un error de GA4 nunca debe romper la tienda.
+  if (typeof gtag === "function") {
+    try {
+      gtag("event", event, params);
+      return;
+    } catch {
+      // Un error de GA4 nunca debe romper la tienda: lo reintentamos luego.
+    }
   }
+
+  pending.push({ kind: "ga4", event, params });
 }
 
 function pixelContents(items: AnalyticsItem[]) {

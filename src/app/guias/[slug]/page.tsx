@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/product-card";
 import { getAllGuides, getGuide } from "@/data/guides";
 import { getProduct } from "@/data/products";
 import { site } from "@/data/site";
+import { socialMetadata } from "@/lib/social";
 
 type Params = { slug: string };
 
@@ -28,12 +29,12 @@ export async function generateMetadata({
     description: guide.description,
     keywords: [guide.keyword],
     alternates: { canonical: `/guias/${guide.slug}` },
-    openGraph: {
-      type: "article",
+    ...socialMetadata({
       title: guide.title,
       description: guide.description,
-      url: `/guias/${guide.slug}`,
-    },
+      path: `/guias/${guide.slug}`,
+      type: "article",
+    }),
   };
 }
 

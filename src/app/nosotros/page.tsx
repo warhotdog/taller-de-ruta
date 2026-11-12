@@ -2,12 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { site } from "@/data/site";
+import { socialMetadata } from "@/lib/social";
+
+const DESCRIPTION =
+  "Quienes somos, como elegimos los productos y por que no vendemos cascos ni refacciones de frenos.";
 
 export const metadata: Metadata = {
   title: "Sobre la tienda",
-  description:
-    "Quienes somos, como elegimos los productos y por que no vendemos cascos ni refacciones de frenos.",
+  description: DESCRIPTION,
   alternates: { canonical: "/nosotros" },
+  ...socialMetadata({
+    title: "Sobre la tienda",
+    description: DESCRIPTION,
+    path: "/nosotros",
+  }),
 };
 
 export default function AboutPage() {

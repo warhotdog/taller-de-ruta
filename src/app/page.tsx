@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ProductCard } from "@/components/product-card";
@@ -5,6 +6,15 @@ import { collections } from "@/data/collections";
 import { guides } from "@/data/guides";
 import { getFeaturedProducts } from "@/data/products";
 import { site } from "@/data/site";
+import { socialMetadata } from "@/lib/social";
+
+export const metadata: Metadata = {
+  ...socialMetadata({
+    title: `${site.name} | ${site.tagline}`,
+    description: site.description,
+    path: "/",
+  }),
+};
 
 const trustPoints = [
   {

@@ -3,13 +3,35 @@ import Link from "next/link";
 
 import { site } from "@/data/site";
 import { formatMXN } from "@/lib/format";
+import { socialMetadata } from "@/lib/social";
+
+const DESCRIPTION =
+  "Tiempos de entrega reales, costo de envio y como rastrear tu pedido en Mexico. Envio gratis desde $599 MXN.";
 
 export const metadata: Metadata = {
   title: "Envio y tiempos de entrega",
-  description:
-    "Tiempos de entrega reales, costo de envio y como rastrear tu pedido en Mexico. Envio gratis desde $599 MXN.",
+  description: DESCRIPTION,
   alternates: { canonical: "/envios" },
+  ...socialMetadata({
+    title: "Envio y tiempos de entrega",
+    description: DESCRIPTION,
+    path: "/envios",
+  }),
 };
+
+/**
+ * El plazo total que se promete (site.deliveryMin a site.deliveryMax) se divide
+ * en preparacion y transito. Estos numeros estan calculados para que las dos
+ * partes SIEMPRE sumen el total anunciado: si se editan a mano y no cuadran,
+ * la pagina se contradice sola.
+ *
+ *   1 (preparacion min) + 6 (transito min) = 7 dias habiles
+ *   3 (preparacion max) + 12 (transito max) = 15 dias habiles
+ */
+const PREP_MIN = 1;
+const PREP_MAX = 3;
+const TRANSIT_MIN = site.deliveryMin - PREP_MIN;
+const TRANSIT_MAX = site.deliveryMax - PREP_MAX;
 
 export default function ShippingPage() {
   return (
@@ -41,12 +63,16 @@ export default function ShippingPage() {
         </p>
         <ul>
           <li>
-            <strong>Preparacion (1 a 3 dias habiles):</strong> confirmamos tu pedido con
-            el proveedor y se despacha.
+            <strong>
+              Preparacion ({PREP_MIN} a {PREP_MAX} dias habiles):
+            </strong>{" "}
+            confirmamos tu pedido con el proveedor y se despacha.
           </li>
           <li>
-            <strong>Transito ({site.deliveryMin - 3} a {site.deliveryMax - 3} dias
-            habiles):</strong> el tiempo que tarda el paquete en llegar a tu domicilio.
+            <strong>
+              Transito ({TRANSIT_MIN} a {TRANSIT_MAX} dias habiles):
+            </strong>{" "}
+            el tiempo que tarda el paquete en llegar a tu domicilio.
           </li>
         </ul>
         <p>
