@@ -266,6 +266,45 @@ C20. c20-cubre-punos-gancho-viento-1080x1920
   NOTAS DE GRABACION: Manos en el manubrio con y sin protectores, sensación de viento. Graba de noche con el protector puesto.
 
 ------------------------------------------------------------------------------
+C21. c21-llavero-gancho-detalle-1080x1920
+     Formato : vertical (1080x1920)
+     Gancho  : Tu pedido necesita un detalle más
+     Oferta  : MXN 149 (antes MXN 199)
+     CTA     : Escríbenos por WhatsApp
+
+  GANCHO  (0-3 s)  : Hay pedidos que se sienten terminados y pedidos a los que les falta un detalle.
+  CUERPO  (3-12 s) : Este llavero de tela con el ribbon y argolla metalica cuelga de cualquier argolla sin que tengas que abrir la llave. Es de los detalles que mas se regalan y no pesan nada en la mochila.
+  CTA     (12 s+)  : Escríbenos por WhatsApp y te decimos de que colores hay. Envio a todo Mexico, 7 a 15 dias habiles.
+  DURACION SUGERIDA : 14 s
+  NOTAS DE GRABACION: Llaves saliendo de la mochila y enganchandose del ribbon. Muestra los cinco colores en una sola toma.
+
+------------------------------------------------------------------------------
+C22. c22-cable-recordatorio-gancho-horquilla-1080x1920
+     Formato : vertical (1080x1920)
+     Gancho  : El cable que avisa antes de que la horquilla se rompa
+     Oferta  : MXN 129 (antes MXN 179)
+     CTA     : Escríbenos por WhatsApp
+
+  GANCHO  (0-3 s)  : El candado evita que se lleven la moto. Lo que no evita es que la arrastren y la horquilla termine rota.
+  CUERPO  (3-12 s) : Este cable de metro y medio se enrosca en el arco del candado y se fija al manubrio. Con el candado puesto queda tenso y delata el intento de mover la moto antes de que la horquilla pague el dano.
+  CTA     (12 s+)  : Escríbenos por WhatsApp. Ningun candado de este precio es inviolable, pero si hace la diferencia. 7 a 15 dias habiles.
+  DURACION SUGERIDA : 17 s
+  NOTAS DE GRABACION: Poner el candado, tensar el cable contra el manubrio y el gesto de 'uy, ya casi arranco'. Aclarar que es un cable recordatorio, no una pieza de seguridad.
+
+------------------------------------------------------------------------------
+C23. c23-cubre-asiento-gancho-lluvia-1080x1080
+     Formato : square (1080x1080)
+     Gancho  : Mojado o quemado, el asiento lo decides tu
+     Oferta  : MXN 299 (antes MXN 399)
+     CTA     : Escríbenos por WhatsApp
+
+  GANCHO  (0-3 s)  : El asiento es la parte de la moto que mas sufre: se empapa, se agrieta con el sol y termina mojando tu ropa en los semaforos.
+  CUERPO  (3-12 s) : Esta funda sella con goma elastica alrededor, sin costuras por las que se filtre el agua, y se coloca en segundos. Al reves tambien sirve: en temporada de calor, el asiento quemado deja de quemarte las piernas.
+  CTA     (12 s+)  : Escríbenos por WhatsApp y te ayudamos a medir tu asiento. Envio a todo Mexico, 7 a 15 dias habiles.
+  DURACION SUGERIDA : 15 s
+  NOTAS DE GRABACION: Funda colocada sobre el asiento, apretando la goma elastica. Mide el asiento en pantalla con la mano.
+
+------------------------------------------------------------------------------
 
 REGLAS PARA TODOS LOS VIDEOS
 - Cierra siempre con: 'Escribenos por WhatsApp' + 'Envio a todo Mexico, 7 a 15 dias habiles'.
