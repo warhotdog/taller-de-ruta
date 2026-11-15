@@ -368,8 +368,8 @@ CREATIVOS: list[dict] = [
         "scene": "weight",
         "kicker": "PESO",
         "hook": "El peso en la espalda *se paga*",
-        "price": 1099,
-        "compare": 1399,
+        "price": 1599,
+        "compare": 1799,
         "cta": "Escríbenos por WhatsApp",
         "guion": {
             "gancho": "Si cargas peso en la espalda, la moto te lo cobra.",
@@ -386,8 +386,8 @@ CREATIVOS: list[dict] = [
         "scene": "none",
         "kicker": "SIEMPRE A LA MANO",
         "hook": "Cartera, celular y documentos: *secos*",
-        "price": 399,
-        "compare": 499,
+        "price": 299,
+        "compare": 399,
         "cta": "Escríbenos por WhatsApp",
         "guion": {
             "gancho": "Cartera, celular y documentos: secos y a la mano.",
@@ -404,8 +404,8 @@ CREATIVOS: list[dict] = [
         "scene": "rain",
         "kicker": "TRABAJO DE CAMPO",
         "hook": "Cierre estanco. *No una funda de lluvia.*",
-        "price": 749,
-        "compare": 899,
+        "price": 1699,
+        "compare": 1999,
         "cta": "Escríbenos por WhatsApp",
         "guion": {
             "gancho": "Cierre estanco, no una funda de lluvia.",
@@ -512,8 +512,8 @@ CREATIVOS: list[dict] = [
         "scene": "none",
         "kicker": "HERRAMIENTA ORDENADA",
         "hook": "Herramienta suelta *termina sonando*",
-        "price": 329,
-        "compare": 399,
+        "price": 349,
+        "compare": 449,
         "cta": "Escríbenos por WhatsApp",
         "guion": {
             "gancho": "Herramienta suelta termina sonando, oxidada o perdida.",

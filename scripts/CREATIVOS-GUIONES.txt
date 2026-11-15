@@ -139,7 +139,7 @@ C10. c10-cubre-moto-gancho-viento-1080x1080
 C11. c11-alforjas-gancho-peso-1080x1920
      Formato : vertical (1080x1920)
      Gancho  : El peso en la espalda se paga
-     Oferta  : MXN 1099 (antes MXN 1399)
+     Oferta  : MXN 1599 (antes MXN 1799)
      CTA     : Escríbenos por WhatsApp
 
   GANCHO  (0-3 s)  : Si cargas peso en la espalda, la moto te lo cobra.
@@ -152,7 +152,7 @@ C11. c11-alforjas-gancho-peso-1080x1920
 C12. c12-bolsa-pierna-gancho-documentos-1080x1080
      Formato : square (1080x1080)
      Gancho  : Cartera, celular y documentos: secos
-     Oferta  : MXN 399 (antes MXN 499)
+     Oferta  : MXN 299 (antes MXN 399)
      CTA     : Escríbenos por WhatsApp
 
   GANCHO  (0-3 s)  : Cartera, celular y documentos: secos y a la mano.
@@ -165,7 +165,7 @@ C12. c12-bolsa-pierna-gancho-documentos-1080x1080
 C13. c13-mochila-gancho-lluvia-1080x1920
      Formato : vertical (1080x1920)
      Gancho  : Cierre estanco. No una funda de lluvia.
-     Oferta  : MXN 749 (antes MXN 899)
+     Oferta  : MXN 1699 (antes MXN 1999)
      CTA     : Escríbenos por WhatsApp
 
   GANCHO  (0-3 s)  : Cierre estanco, no una funda de lluvia.
@@ -243,7 +243,7 @@ C18. c18-candado-gancho-cable-recordatorio-1080x1920
 C19. c19-bolsa-herramientas-gancho-herramienta-1080x1080
      Formato : square (1080x1080)
      Gancho  : Herramienta suelta termina sonando
-     Oferta  : MXN 329 (antes MXN 399)
+     Oferta  : MXN 349 (antes MXN 449)
      CTA     : Escríbenos por WhatsApp
 
   GANCHO  (0-3 s)  : Herramienta suelta termina sonando, oxidada o perdida.
