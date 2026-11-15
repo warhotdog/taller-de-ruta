@@ -173,6 +173,29 @@ export const collections: Collection[] = [
     ],
     emoji: "✨",
   },
+  {
+    slug: "novedades",
+    name: "Novedades y regalo",
+    title: "Novedades para moto: llaveros, cables recordatorio y detalles de regalo",
+    metaDescription:
+      "Llaveros Remove Before Ride, cable recordatorio para candado, cubre de asiento y porta botellas para moto. Articulos baratos para sumar a tu pedido.",
+    description:
+      "Llaveros Remove Before Ride, cable recordatorio para candado, cubre de asiento y porta botellas para moto. Articulos baratos para sumar a tu pedido.",
+    seoText: [
+      "Los detalles que rematan el pedido son los que se compran por impulso: un llavero que cambia la llave del auto, un cable que te salva la horquilla, un porta botellas para la ruta larga. Son articulos baratos que casi siempre se suman al carrito de algo mas.",
+      "Aqui no hay piezas criticas ni nada de seguridad. Son accesorios de uso y de regalo, pensados para completar el equipo y para regalar a otro motociclista. Todos con disenos genericos, sin logos de marcas registradas.",
+      "Si compras para regalar, el llavero es la opcion mas segura: no hay tallas, no se rompe y el receptor lo usa desde el primer dia. Elige el color y ya.",
+    ],
+    keywords: [
+      "llavero moto",
+      "llavero remove before ride",
+      "cable recordatorio candado moto",
+      "cubre de asiento moto",
+      "porta botellas moto",
+      "accesorios para moto de regalo",
+    ],
+    emoji: "🎁",
+  },
 ];
 
 export function getCollection(slug: string): Collection | undefined {

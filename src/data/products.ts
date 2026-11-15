@@ -19,7 +19,7 @@ export const products: Product[] = [
     role: "hero",
     price: 599,
     compareAt: 749,
-    costMXN: 107,
+    costMXN: 116,
     badge: "Mas vendido",
     summary:
       "Soporte antivibracion con rotacion 360 y montaje en manubrio o espejo, con sujetador de cable incluido. Hecho para quien vive sobre la moto.",
@@ -88,7 +88,7 @@ export const products: Product[] = [
     role: "hero",
     price: 469,
     compareAt: 599,
-    costMXN: 145,
+    costMXN: 143,
     summary:
       "Caja impermeable con cierre de seguridad y base para espejo. Tu telefono queda protegido de la lluvia y a la vista.",
     description: [
@@ -148,7 +148,7 @@ export const products: Product[] = [
     role: "hero",
     price: 349,
     compareAt: 449,
-    costMXN: 85,
+    costMXN: 23,
     summary:
       "Par de punos de goma con patron antideslizante para manubrios de 22 y 25 mm. Menos vibracion, mejor agarre.",
     description: [
@@ -201,9 +201,9 @@ export const products: Product[] = [
     shortName: "Mochila impermeable 25L",
     collection: "alforjas-y-bolsas",
     role: "catalogo",
-    price: 749,
-    compareAt: 899,
-    costMXN: 320,
+    price: 1699,
+    compareAt: 1999,
+    costMXN: 759,
     summary:
       "Mochila con cierre estanco y espalda acolchada. Lleva tu equipo sin que se moje y sin cargar todo el peso en los hombros.",
     description: [
@@ -258,9 +258,9 @@ export const products: Product[] = [
     shortName: "Alforjas impermeables 36L-58L",
     collection: "alforjas-y-bolsas",
     role: "catalogo",
-    price: 1099,
-    compareAt: 1399,
-    costMXN: 520,
+    price: 1599,
+    compareAt: 1799,
+    costMXN: 699,
     summary:
       "Par de alforjas laterales con cubierta impermeable y bandas elasticas. La forma mas estable de cargar en la moto.",
     description: [
@@ -318,9 +318,9 @@ export const products: Product[] = [
     shortName: "Bolsa de pierna impermeable",
     collection: "alforjas-y-bolsas",
     role: "upsell",
-    price: 399,
-    compareAt: 499,
-    costMXN: 120,
+    price: 299,
+    compareAt: 399,
+    costMXN: 123,
     summary:
       "Bolsa compacta que se ajusta al muslo con correas. Documentos, telefono y cartera siempre a la mano y secos.",
     description: [
@@ -374,9 +374,9 @@ export const products: Product[] = [
     shortName: "Bolsa de herramientas",
     collection: "alforjas-y-bolsas",
     role: "upsell",
-    price: 329,
-    compareAt: 399,
-    costMXN: 110,
+    price: 349,
+    compareAt: 449,
+    costMXN: 550,
     summary:
       "Rollo compacto para llevar herramienta basica sujeta a la moto, sin que suene ni se moje.",
     description: [
@@ -431,7 +431,7 @@ export const products: Product[] = [
     role: "hero",
     price: 599,
     compareAt: 749,
-    costMXN: 210,
+    costMXN: 196,
     badge: "Estacional",
     summary:
       "Funda impermeable con hebilla inferior antiviento. Protege de lluvia, sol y polvo a las motos que duermen afuera.",
@@ -492,7 +492,7 @@ export const products: Product[] = [
     role: "catalogo",
     price: 499,
     compareAt: 649,
-    costMXN: 210,
+    costMXN: 190,
     summary:
       "Protectores de manos que cortan el viento y la lluvia directa sobre dedos y punos. Se montan en el manubrio.",
     description: [
@@ -546,7 +546,7 @@ export const products: Product[] = [
     role: "hero",
     price: 449,
     compareAt: 549,
-    costMXN: 165,
+    costMXN: 24,
     summary:
       "Candado de disco con llave y cable recordatorio naranja. Bloquea la rueda y te recuerda quitarlo antes de arrancar.",
     description: [
@@ -601,7 +601,7 @@ export const products: Product[] = [
     role: "upsell",
     price: 199,
     compareAt: 249,
-    costMXN: 55,
+    costMXN: 42,
     summary:
       "Red con ganchos que sujeta casco, mochila o bolsa a la parrilla o al asiento. El accesorio mas util por lo que cuesta.",
     description: [
@@ -655,7 +655,7 @@ export const products: Product[] = [
     role: "upsell",
     price: 179,
     compareAt: 229,
-    costMXN: 45,
+    costMXN: 21,
     summary:
       "Cepillo de tres caras que abraza la cadena y limpia los tres lados al mismo tiempo. Mantenimiento en minutos.",
     description: [
@@ -709,7 +709,7 @@ export const products: Product[] = [
     role: "upsell",
     price: 149,
     compareAt: 189,
-    costMXN: 40,
+    costMXN: 56,
     summary:
       "Calcomanias resistentes al agua y al sol para personalizar carenado, tanque o casco. Disenos genericos, sin marcas.",
     description: [
@@ -763,7 +763,7 @@ export const products: Product[] = [
     role: "upsell",
     price: 149,
     compareAt: 189,
-    costMXN: 42,
+    costMXN: 56,
     summary:
       "Calcomanias reflectivas que aumentan tu visibilidad de noche. Seguridad visible por muy poco dinero.",
     description: [
@@ -806,6 +806,178 @@ export const products: Product[] = [
     image: "/productos/stickers-reflectivos.jpg",
     rating: 4.5,
     reviews: 21,
+    available: true,
+    featured: false,
+  },
+  {
+    slug: "llavero-remove-before-flight",
+    name: "Llavero de Tela Remove Before Flight con Argolla para Llaves de Moto",
+    shortName: "Llavero de tela Remove Before",
+    collection: "novedades",
+    role: "upsell",
+    price: 149,
+    compareAt: 199,
+    costMXN: 23,
+    badge: "Para regalar",
+    summary:
+      "Llavero de tela con ribete reflectivo y argolla metalica. El detalle que remata el pedido y el regalo que nunca falla.",
+    description: [
+      "Hay pedidos que se sienten terminados y pedidos a los que les falta un detalle. Este llavero de tela con el ribbon Remove Before Flight y argolla metalica es de los segundos: cuelgas las llaves y se acaba de resolver.",
+      "La banda va suelta al ribbon, asi que puedes pasarla por cualquier argolla de la llanta o del portavasos sin abrir la llave ni sacarla de su fundido.",
+      "Es de los articulos que mas se regalan: no pesa nada, no tiene tallas y no se rompe. Si buscas un detalle para alguien que vive sobre la moto, aqui esta.",
+    ],
+    features: [
+      "Ribbon de tela con ribete reflectivo",
+      "Argolla metalica en la base del lazo",
+      "Se engancha en cualquier argolla sin abrir la llave",
+      "Cinco colores disponibles",
+      "No tiene tallas ni medidas",
+    ],
+    specs: [
+      { label: "Material", value: "Tela con ribete reflectivo y argolla de metal" },
+      { label: "Largo del lazo", value: "Aproximadamente 20 cm" },
+      { label: "Colores", value: "Verde, negro, amarillo, azul y rojo" },
+      { label: "Peso", value: "Menos de 20 gramos" },
+      { label: "Incluye", value: "Un llavero de tela" },
+    ],
+    faq: [
+      {
+        q: "Entra cualquier llave?",
+        a: "Acepta llaves con argollo normal, que son la mayoria. Para llaves con argollo muy grande el lazo queda flojo y conviene pasar el ribbon por el estuche de la llave en vez de la argolla.",
+      },
+      {
+        q: "Sirve como regalo?",
+        a: "Si. Es de los detalles que mas se regalan: no tiene tallas, no se rompe y es de lo mas facil de elegir sin saber que le gusta a alguien.",
+      },
+      {
+        q: "De que material es la argolla?",
+        a: "De metal con acabado cromado, no de plastico. Es la parte que mas se desgasta cuando cuelgas las llaves en el chaveo, asi que es la que tiene que aguantar.",
+      },
+    ],
+    keywords: [
+      "llavero moto",
+      "llavero remove before flight",
+      "llavero de tela",
+      "llavero para llaves de moto",
+    ],
+    shippingNote: "Envio con guia rastreable. 7 a 15 dias habiles.",
+    image: "/productos/llavero-remove-before-flight.jpg",
+    rating: 4.7,
+    reviews: 34,
+    available: true,
+    featured: false,
+  },
+  {
+    slug: "cable-recordatorio-candado-moto",
+    name: "Cable Recordatorio para Candado de Disco de Moto 150 cm",
+    shortName: "Cable recordatorio para candado",
+    collection: "novedades",
+    role: "upsell",
+    price: 129,
+    compareAt: 179,
+    costMXN: 28,
+    summary:
+      "Cable de 150 cm que va del candado al manubrio. Si alguien intenta mover la moto, el cable se tensa antes de que la horquilla se toriga.",
+    description: [
+      "El candado de disco evita que se lleven la moto. Lo que no evita es que la arrastren o que la levanten, y para eso la horquilla termina rota.",
+      "Este cable se enrosca en el arco del candado y se fija al manubrio. Con el candado puesto, el cable queda tenso y delata el intento de mover la moto antes de que la horquilla pague el dano.",
+      "Mide 1.50 metros, suficiente para llegar del candado al manubrio sin quedar flojo. Viene en varios colores para que lo identifiques de un vistazo.",
+    ],
+    features: [
+      "1.50 metros de largo para llegar al manubrio",
+      "Se enrosca en el arco del candado de disco",
+      "Tensado firme: no se afloja con el uso diario",
+      "Varios colores disponibles",
+      "Se guarda enrollado en un bolsillo pequeno",
+    ],
+    specs: [
+      { label: "Largo", value: "150 cm" },
+      { label: "Material", value: "Acero con funda de plastico flexible" },
+      { label: "Para usar con", value: "Candado de disco con arco" },
+      { label: "Colores", value: "Varios disponibles" },
+      { label: "Incluye", value: "Un cable recordatorio" },
+    ],
+    faq: [
+      {
+        q: "Es una pieza de seguridad?",
+        a: "No. Es un cable recordatorio: no impide el robo ni sustituye a un buen candado ni a una buena cerradura. Solo avisa del intento y evita que la moto se arrastre. Ningun candado de este precio es inviolable.",
+      },
+      {
+        q: "Sirve con cualquier candado de disco?",
+        a: "Con los que tienen arco de metal por el que pasa el cable, que son casi todos los de disco. Si tu candado es de otro tipo, mandanos foto antes de comprar.",
+      },
+      {
+        q: "Como se fija al manubrio?",
+        a: "Se aprieta en el manubrio con la presilla que trae y se tensa hasta que quede firme. Si tu manubrio es de menos de 22 mm, no va a apretar bien.",
+      },
+    ],
+    keywords: [
+      "cable recordatorio moto",
+      "cable para candado de disco",
+      "cable antirrobo moto",
+      "cable de seguridad moto",
+    ],
+    shippingNote: "Envio con guia rastreable. 7 a 15 dias habiles.",
+    image: "/productos/cable-recordatorio-candado.jpg",
+    rating: 4.5,
+    reviews: 41,
+    available: true,
+    featured: false,
+  },
+  {
+    slug: "cubre-asiento-moto-impermeable",
+    name: "Cubre de Asiento para Moto Impermeable Universal",
+    shortName: "Cubre de asiento impermeable",
+    collection: "novedades",
+    role: "upsell",
+    price: 299,
+    compareAt: 399,
+    costMXN: 94,
+    summary:
+      "Funda impermeable para el asiento de la moto. Se pone en segundos y evita que la lluvia entre al cojin y a tu ropa.",
+    description: [
+      "El asiento es la parte de la moto que mas sufre la lluvia: se empapa, se agrieta con el sol y termina mojando tu ropa en los semaforos.",
+      "Esta funda lo cubre y sella con una goma elastica alrededor, sin costuras por las que se filtre el agua. Se coloca en segundos, sin herramientas.",
+      "Tambien sirve al revés: en los dias de calor y de sol, el asiento quemado deja de quemarte las piernas mientras buscas la sombra del semaforo.",
+    ],
+    features: [
+      "Impermeable, no solo repele el agua llovida",
+      "Sello elastico alrededor, sin costuras abiertas",
+      "Se coloca y se retira en segundos",
+      "Universal: sirve para la mayoria de los asientos de moto",
+      "Tambien protege del sol y del asiento caliente",
+    ],
+    specs: [
+      { label: "Material", value: "Polester con coating impermeable" },
+      { label: "Cierre", value: "Goma elastica alrededor" },
+      { label: "Instalacion", value: "Ajustar y jalar, sin herramientas" },
+      { label: "Tamanos", value: "Universal, consulta la medida de tu asiento" },
+      { label: "Incluye", value: "Una funda para asiento" },
+    ],
+    faq: [
+      {
+        q: "Le queda a mi moto?",
+        a: "Sirve para la mayoria de los asientos de tamano normal. Mide tu asiento de punta a punta y la parte mas ancha: si te queda entre 55 y 75 cm de largo, entra bien. Si tienes una moto muy grande o un asiento de turismo, escribenos con la medida.",
+      },
+      {
+        q: "Se queda puesta con el viento?",
+        a: "Va ajustada con goma elastica alrededor, no como una sabana. A velocidad de ruta alta puede vibrar un poco, pero no se levanta. Recomendamos pasarlo por debajo del asiento para que quede fijo.",
+      },
+      {
+        q: "Se puede guardar en la moto?",
+        a: "Si. Se enrolla y cabe en cualquier compartimento pequeno o en la bolsa del estuche. No ocupa casi nada.",
+      },
+    ],
+    keywords: [
+      "cubre de asiento moto",
+      "funda para asiento de moto",
+      "cubre impermeable moto",
+      "protector de asiento moto",
+    ],
+    shippingNote: "Envio con guia rastreable. 7 a 15 dias habiles.",
+    image: "/productos/cubre-asiento-moto-impermeable.jpg",
+    rating: 4.6,
+    reviews: 27,
     available: true,
     featured: false,
   },

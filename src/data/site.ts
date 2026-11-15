@@ -40,6 +40,7 @@ export const nav = [
   { label: "Soportes de celular", href: "/coleccion/soportes-celular" },
   { label: "Alforjas y bolsas", href: "/coleccion/alforjas-y-bolsas" },
   { label: "Cubre moto", href: "/coleccion/cubre-moto-e-impermeables" },
+  { label: "Novedades", href: "/coleccion/novedades" },
   { label: "Guias", href: "/guias" },
 ] as const;
 

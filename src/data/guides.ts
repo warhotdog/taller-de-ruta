@@ -969,6 +969,9 @@ export const guides: Guide[] = [
       "punos-moto-universales-22-25mm",
       "red-elastica-porta-carga-moto",
       "stickers-moto-genericos",
+      "llavero-remove-before-flight",
+      "cable-recordatorio-candado-moto",
+      "cubre-asiento-moto-impermeable",
     ],
   },
 ];

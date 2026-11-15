@@ -32,6 +32,7 @@ export const COLLECTION_SEO_TITLES: Record<string, string> = {
   "seguridad-y-candados": "Seguridad y candados para moto: disco y reflectivos",
   mantenimiento: "Mantenimiento de moto: cepillos y herramientas",
   "stickers-y-personalizacion": "Stickers y personalizacion para moto y casco",
+  "novedades": "Novedades para moto: llaveros, cables y detalles de regalo",
 };
 
 /** Título SEO de la categoría, con respaldo al `title` de collections.ts. */

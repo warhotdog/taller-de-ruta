@@ -175,7 +175,7 @@ export default function HomePage() {
             href="/tienda"
             className="text-sm font-medium text-accent transition hover:text-accent-hover"
           >
-            Ver los 14 productos →
+            Ver los 17 productos →
           </Link>
         </div>
 

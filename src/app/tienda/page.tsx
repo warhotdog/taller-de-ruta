@@ -9,12 +9,12 @@ import { socialMetadata } from "@/lib/social";
 export const metadata: Metadata = {
   title: "Catalogo completo de accesorios para moto",
   description:
-    "Los 14 accesorios para moto que vendemos: soportes de celular, alforjas, cubre moto, punos, candados, mantenimiento y stickers. Envio a todo Mexico.",
+    "Los 17 accesorios para moto que vendemos: soportes de celular, alforjas, cubre moto, punos, candados, mantenimiento, stickers y novedades. Envio a todo Mexico.",
   alternates: { canonical: "/tienda" },
   ...socialMetadata({
     title: "Catalogo completo de accesorios para moto",
     description:
-      "Los 14 accesorios para moto que vendemos: soportes de celular, alforjas, cubre moto, punos, candados, mantenimiento y stickers. Envio a todo Mexico.",
+      "Los 17 accesorios para moto que vendemos: soportes de celular, alforjas, cubre moto, punos, candados, mantenimiento, stickers y novedades. Envio a todo Mexico.",
     path: "/tienda",
   }),
 };
