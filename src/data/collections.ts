@@ -178,7 +178,7 @@ export const collections: Collection[] = [
     name: "Novedades y regalo",
     title: "Novedades para moto: llaveros, cables recordatorio y detalles de regalo",
     metaDescription:
-      "Llaveros Remove Before Ride, cable recordatorio para candado, cubre de asiento y porta botellas para moto. Articulos baratos para sumar a tu pedido.",
+      "Llavero de tela Remove Before Flight, cable recordatorio para candado y funda impermeable para el asiento. Articulos baratos para sumar a tu pedido.",
     description:
       "Llavero de tela Remove Before Flight, cable recordatorio para candado y funda impermeable para el asiento. Articulos baratos para sumar a tu pedido.",
     seoText: [
