@@ -376,7 +376,7 @@ export const products: Product[] = [
     role: "upsell",
     price: 349,
     compareAt: 449,
-    costMXN: 550,
+    costMXN: 135,
     summary:
       "Rollo compacto para llevar herramienta basica sujeta a la moto, sin que suene ni se moje.",
     description: [
