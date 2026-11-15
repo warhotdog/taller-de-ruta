@@ -84,14 +84,19 @@ ART_A_PRODUCTO = {
 
 
 def load_visual(name: str) -> Image.Image | None:
-    """Carga el visual fotorrealista del creativo, si ya fue generado."""
-    path = VISUAL_DIR / f"{name}.png"
-    if not path.exists():
-        return None
-    try:
-        return Image.open(path).convert("RGB")
-    except Exception:
-        return None
+    """Carga el visual del creativo si el usuario ya lo dejo en la carpeta.
+
+    Acepta .png, .jpg, .jpeg y .webp. El nombre debe ser exactamente el del
+    creativo (ver PROMPTS-CREATIVOS.md).
+    """
+    for ext in (".png", ".jpg", ".jpeg", ".webp"):
+        path = VISUAL_DIR / f"{name}{ext}"
+        if path.exists():
+            try:
+                return Image.open(path).convert("RGB")
+            except Exception:
+                return None
+    return None
 
 
 def load_foto_producto(art: str) -> Image.Image | None:
